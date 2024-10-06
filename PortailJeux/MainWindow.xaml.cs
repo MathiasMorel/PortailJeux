@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PortailJeux.Jeux;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace PortailJeux
 {
     /// <summary>
@@ -20,9 +22,41 @@ namespace PortailJeux
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<InterfaceJeux> _jeux;
+
         public MainWindow()
         {
             InitializeComponent();
+            ChargerJeux();
+            BoutonJeux();
+        }
+
+        private void ChargerJeux()
+        {
+            _jeux = new List<InterfaceJeux>
+                {
+                    new morpions(),
+                    new Puissance4()
+                };
+        }
+
+        private void BoutonJeux()
+        {
+            foreach (var jeu in _jeux)
+            {
+                Button button = new Button
+                {
+                    Content = jeu.Nom,
+                    Margin = new Thickness(5)
+                };
+                button.Click += (sender, e) => jeu.Demarrer();
+                JeuxPanel.Children.Add(button);
+            }
+        }
+
+        public void NavigateToFenetre(Window window)
+        {
+            window.Show();
         }
     }
 }
